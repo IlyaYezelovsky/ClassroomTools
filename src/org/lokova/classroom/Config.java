@@ -34,30 +34,34 @@ public enum Config {
 
 	}
 
+	static {
+		initialize();
+	}
+
 	public static ConfigData data() {
 		return INSTANCE.cfgData;
+	}
+
+	public static void initialize() {
+		INSTANCE.cfgData = INSTANCE.new ConfigData();
+		File file = new File("config.json");
+		Gson gson = new Gson();
+		if (!file.exists()) {
+			try (var writer = new FileWriter("config.json")) {
+				file.createNewFile();
+				gson.toJson(INSTANCE.cfgData, writer);
+			} catch (IOException e) {
+				throw new UncheckedIOException("Failed to initialize config", e);
+			}
+		} else {
+			INSTANCE.load();
+		}
 	}
 
 	private ConfigData cfgData;
 
 	public ConfigData getData() {
 		return cfgData;
-	}
-
-	public void initialize() {
-		cfgData = new ConfigData();
-		File file = new File("config.json");
-		Gson gson = new Gson();
-		if (!file.exists()) {
-			try (var writer = new FileWriter("config.json")) {
-				file.createNewFile();
-				gson.toJson(cfgData, writer);
-			} catch (IOException e) {
-				throw new UncheckedIOException("Failed to initialize config", e);
-			}
-		} else {
-			load();
-		}
 	}
 
 	public void load() {
