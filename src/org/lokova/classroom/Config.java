@@ -34,6 +34,10 @@ public enum Config {
 
 	}
 
+	public static ConfigData data() {
+		return INSTANCE.cfgData;
+	}
+
 	private ConfigData cfgData;
 
 	public ConfigData getData() {

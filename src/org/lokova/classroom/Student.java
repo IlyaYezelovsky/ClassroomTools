@@ -34,6 +34,10 @@ public class Student implements Serializable, Comparable<Student> {
 		return Collections.unmodifiableSet(girls);
 	}
 
+	public static void load() throws IOException, ClassNotFoundException {
+		load(new File(Config.data().getDataPath()));
+	}
+
 	@SuppressWarnings("unchecked") // safe cast
 	public static void load(File file) throws IOException, ClassNotFoundException {
 		Objects.requireNonNull(file, "File cannot be null");
@@ -51,6 +55,10 @@ public class Student implements Serializable, Comparable<Student> {
 			}
 			throw new IOException("A TreeSet<Student> is expected but a " + obj.getClass().getName() + " was found");
 		}
+	}
+
+	public static void save() throws IOException {
+		save(new File(Config.data().getDataPath()));
 	}
 
 	public static void save(File file) throws IOException {
