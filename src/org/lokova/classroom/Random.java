@@ -22,39 +22,38 @@ public class Random {
 
 	private Student generate(Sex sex) {
 		if (sex == Sex.MALE) {
-			return generateFrom(Student.getBoys());
+			return generateFrom(Student.getBoysArray());
 		}
 		if (sex == Sex.FEMALE) {
-			return generateFrom(Student.getGirls());
+			return generateFrom(Student.getGirlsArray());
 		}
-		return generateFrom(Student.getAll());
+		return generateFrom(Student.getAllArray());
 	}
 
 	private List<Student> generate(Sex sex, int count, boolean duplicate) {
 		if (sex == Sex.MALE) {
-			return generateFrom(Student.getBoys(), count, duplicate);
+			return generateFrom(Student.getBoysArray(), count, duplicate);
 		}
 		if (sex == Sex.FEMALE) {
-			return generateFrom(Student.getGirls(), count, duplicate);
+			return generateFrom(Student.getGirlsArray(), count, duplicate);
 		}
-		return generateFrom(Student.getAll(), count, duplicate);
+		return generateFrom(Student.getAllArray(), count, duplicate);
 	}
 
-	private Student generateFrom(Set<Student> set) {
-		Student[] array = set.toArray(new Student[0]);
+	private Student generateFrom(Student[] array) {
 		return array[inner.nextInt(array.length)];
 	}
 
-	private List<Student> generateFrom(Set<Student> set, int count, boolean duplicate) {
+	private List<Student> generateFrom(Student[] array, int count, boolean duplicate) {
 		List<Student> result = new ArrayList<>();
 		if (duplicate) {
 			for (int i = 0; i < count; i++) {
-				result.add(generateFrom(set));
+				result.add(generateFrom(array));
 			}
 		} else {
 			Student candidate = null;
 			while (result.size() < count) {
-				if (!result.contains(candidate = generateFrom(set))) {
+				if (!result.contains(candidate = generateFrom(array))) {
 					result.add(candidate);
 				}
 			}

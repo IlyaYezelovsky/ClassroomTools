@@ -26,12 +26,24 @@ public class Student implements Serializable, Comparable<Student> {
 		return Collections.unmodifiableSet(all);
 	}
 
+	public static Student[] getAllArray() {
+		return all.toArray(new Student[0]);
+	}
+
 	public static Set<Student> getBoys() {
 		return Collections.unmodifiableSet(boys);
 	}
 
+	public static Student[] getBoysArray() {
+		return boys.toArray(new Student[0]);
+	}
+
 	public static Set<Student> getGirls() {
 		return Collections.unmodifiableSet(girls);
+	}
+
+	public static Student[] getGirlsArray() {
+		return girls.toArray(new Student[0]);
 	}
 
 	public static void load() throws IOException, ClassNotFoundException {
