@@ -67,14 +67,15 @@ public class Student implements Serializable, Comparable<Student> {
 		}
 	}
 
-	private int number;
+	private int code;
 	private String name;
 	private Sex sex;
 	private int score;
 	private List<ScoreRecord> records = new ArrayList<>();
+	private Group group;
 
-	public Student(int number, String name, Sex sex) {
-		this.number = number;
+	public Student(int code, String name, Sex sex) {
+		this.code = code;
 		this.name = name;
 		this.sex = sex;
 		all.add(this);
@@ -89,7 +90,7 @@ public class Student implements Serializable, Comparable<Student> {
 	@Override
 	public int compareTo(Student o) {
 		Objects.requireNonNull(o, "Student cannot be null");
-		return Integer.compare(number, o.number);
+		return Integer.compare(code, o.code);
 	}
 
 	public boolean deleteRecord(ScoreRecord rekord) {
@@ -105,7 +106,7 @@ public class Student implements Serializable, Comparable<Student> {
 			return false;
 		}
 		Student other = (Student) obj;
-		return Objects.equals(name, other.name) && (number == other.number) && (sex == other.sex);
+		return Objects.equals(name, other.name) && (code == other.code) && (sex == other.sex);
 	}
 
 	private void fixSex() {
@@ -116,28 +117,51 @@ public class Student implements Serializable, Comparable<Student> {
 		}
 	}
 
+	public Group getGroup() {
+		return group;
+	}
+
+	public String getInfo() {
+		return """
+				学号：%s
+				姓名：%s
+				性别：%s
+				组别：%s
+				分数：%s
+				""".formatted(code, name, getSexCharacter(), group, getScore());
+	}
+
 	public String getName() {
 		return name;
 	}
 
 	public int getNumber() {
-		return number;
+		return code;
+	}
+
+	public int getScore() {
+		int total = 0;
+		for (ScoreRecord rekord : records) {
+			total += rekord.getScore();
+		}
+		return total;
 	}
 
 	public Sex getSex() {
 		return sex;
 	}
 
+	public char getSexCharacter() {
+		return sex == Sex.MALE ? '男' : '女';
+	}
+
 	public char getSexSymbol() {
-		if (sex == Sex.MALE) {
-			return '♂';
-		}
-		return '♀';
+		return sex == Sex.MALE ? '♂' : '♀';
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(name, number, sex);
+		return Objects.hash(name, code, sex);
 	}
 
 	public void modifyScore(int score, String reason) {
@@ -154,13 +178,17 @@ public class Student implements Serializable, Comparable<Student> {
 		records.add(rekord);
 	}
 
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+
 	public void setName(String name) {
 		Objects.requireNonNull(name, "Name cannot be null");
 		this.name = name;
 	}
 
 	public void setNumber(int number) {
-		this.number = number;
+		code = number;
 	}
 
 	public void setSex(Sex sex) {
@@ -170,7 +198,7 @@ public class Student implements Serializable, Comparable<Student> {
 
 	@Override
 	public String toString() {
-		return number + getSexSymbol() + name;
+		return code + getSexSymbol() + name;
 	}
 
 }
