@@ -2,6 +2,7 @@ package org.lokova.classroom;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class Random {
 
@@ -39,20 +40,21 @@ public class Random {
 		return generateFrom(Student.getAll(), count, duplicate);
 	}
 
-	private Student generateFrom(List<Student> list) {
-		return list.get(inner.nextInt(list.size()));
+	private Student generateFrom(Set<Student> set) {
+		Student[] array = set.toArray(new Student[0]);
+		return array[inner.nextInt(array.length)];
 	}
 
-	private List<Student> generateFrom(List<Student> list, int count, boolean duplicate) {
+	private List<Student> generateFrom(Set<Student> set, int count, boolean duplicate) {
 		List<Student> result = new ArrayList<>();
 		if (duplicate) {
 			for (int i = 0; i < count; i++) {
-				result.add(generateFrom(list));
+				result.add(generateFrom(set));
 			}
 		} else {
 			Student candidate = null;
 			while (result.size() < count) {
-				if (!result.contains(candidate = generateFrom(list))) {
+				if (!result.contains(candidate = generateFrom(set))) {
 					result.add(candidate);
 				}
 			}
