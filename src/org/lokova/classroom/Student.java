@@ -34,13 +34,14 @@ public class Student implements Serializable, Comparable<Student> {
 		return Collections.unmodifiableSet(girls);
 	}
 
+	@SuppressWarnings("unchecked") // safe cast
 	public static void load(File file) throws IOException, ClassNotFoundException {
 		Objects.requireNonNull(file, "File cannot be null");
 		try (var is = new ObjectInputStream(new FileInputStream(file))) {
 			Object obj = is.readObject();
 			if (obj.getClass() == TreeSet.class) {
 				var set = (TreeSet<?>) obj;
-				if ((set.getFirst() instanceof Student)) {
+				if ((set.getFirst() instanceof Student)) { // checked here
 					all = (TreeSet<Student>) set;
 					return;
 				} else {
