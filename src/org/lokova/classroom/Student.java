@@ -151,6 +151,14 @@ public class Student implements Serializable, Comparable<Student> {
 		return code;
 	}
 
+	public List<ScoreRecord> getRecords() {
+		return Collections.unmodifiableList(records);
+	}
+
+	public ScoreRecord[] getRecordsArray() {
+		return records.toArray(new ScoreRecord[0]);
+	}
+
 	public int getScore() {
 		int total = 0;
 		for (ScoreRecord rekord : records) {
