@@ -1,5 +1,6 @@
 package org.lokova.classroom;
 
+import java.util.Collection;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -14,10 +15,15 @@ public class StudentUI implements UI {
 	private JPanel panel;
 	private JList<Student> studentList;
 	private JTextArea infoArea;
+	private JList<ScoreRecord> recordList;
+
+	public StudentUI(Collection<Student> students) {
+		studentList = new JList<>(Student.getAllArray());
+		recordList = new JList<>();
+	}
 
 	@Override
 	public void go() {
-
 		frame = new JFrame("学生管理");
 		panel = new JPanel();
 		JScrollPane scroller = new JScrollPane(studentList);
@@ -33,14 +39,18 @@ public class StudentUI implements UI {
 
 		infoArea = new JTextArea();
 		infoArea.setEditable(false);
+
+		// recordList
 	}
 
 	public void refresh() {
 		Student selected = studentList.getSelectedValue();
 		if (selected == null) {
 			infoArea.setText("");
+			recordList.setListData(new ScoreRecord[0]);
 		} else {
 			infoArea.setText(selected.getInfo());
+			recordList.setListData(selected.getRecordsArray());
 		}
 	}
 
