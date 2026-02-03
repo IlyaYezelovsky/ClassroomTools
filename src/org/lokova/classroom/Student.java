@@ -99,6 +99,28 @@ public class Student implements Serializable, Comparable<Student> {
 		}
 	}
 
+	public void addRecord(int score, String reason) {
+		addRecord(score, reason, LocalDateTime.now());
+	}
+
+	public void addRecord(int score, String reason, LocalDateTime time) {
+		Objects.requireNonNull(reason, "Reason must be provided");
+		Objects.requireNonNull(time, "Time cannot be null");
+		if (score == 0) {
+			throw new IllegalArgumentException("Score cannot be 0");
+		}
+		ScoreRecord rekord = new ScoreRecord(this, score, reason, time);
+		records.add(rekord);
+	}
+
+	public void addRecord(QuickRecord q) {
+		addRecord(q, LocalDateTime.now());
+	}
+
+	public void addRecord(QuickRecord q, LocalDateTime time) {
+		addRecord(q.getScore(), q.getReason(), time);
+	}
+
 	@Override
 	public int compareTo(Student o) {
 		Objects.requireNonNull(o, "Student cannot be null");
@@ -182,20 +204,6 @@ public class Student implements Serializable, Comparable<Student> {
 	@Override
 	public int hashCode() {
 		return Objects.hash(name, code, sex);
-	}
-
-	public void modifyScore(int score, String reason) {
-		modifyScore(score, reason, LocalDateTime.now());
-	}
-
-	public void modifyScore(int score, String reason, LocalDateTime time) {
-		Objects.requireNonNull(reason, "Reason must be provided");
-		Objects.requireNonNull(time, "Time cannot be null");
-		if (score == 0) {
-			throw new IllegalArgumentException("Score cannot be 0");
-		}
-		ScoreRecord rekord = new ScoreRecord(this, score, reason, time);
-		records.add(rekord);
 	}
 
 	public void setGroup(Group group) {

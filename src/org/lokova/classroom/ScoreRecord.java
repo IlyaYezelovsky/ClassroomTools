@@ -8,6 +8,18 @@ import java.util.UUID;
 public class ScoreRecord implements Serializable, Comparable<ScoreRecord> {
 
 	private static final long serialVersionUID = 1L;
+
+	public static String pm(int n) {
+		if (n == 0) {
+			return String.valueOf(n);
+		}
+		if (n > 0) {
+			return "+" + n;
+		} else {
+			return "-" + n;
+		}
+	}
+
 	private UUID uuid;
 	private Student owner;
 	private int score;
@@ -32,6 +44,14 @@ public class ScoreRecord implements Serializable, Comparable<ScoreRecord> {
 		this.time = time;
 	}
 
+	public ScoreRecord(Student owner, QuickRecord qr) {
+		this(owner, qr, LocalDateTime.now());
+	}
+
+	public ScoreRecord(Student owner, QuickRecord qr, LocalDateTime time) {
+		this(owner, qr.getScore(), qr.getReason(), time);
+	}
+
 	@Override
 	public int compareTo(ScoreRecord o) {
 		return uuid.compareTo(o.uuid);
@@ -47,6 +67,10 @@ public class ScoreRecord implements Serializable, Comparable<ScoreRecord> {
 		}
 		ScoreRecord other = (ScoreRecord) obj;
 		return Objects.equals(uuid, other.uuid);
+	}
+
+	public String getInfo() {
+		return time + "：" + pm(score) + "（" + reason + "）";
 	}
 
 	public Student getOwner() {
@@ -76,8 +100,7 @@ public class ScoreRecord implements Serializable, Comparable<ScoreRecord> {
 
 	@Override
 	public String toString() {
-		return "ScoreRecord [uuid=" + uuid + ", owner=" + owner + ", score=" + score + ", reason=" + reason + ", time="
-				+ time + "]";
+		return getInfo();
 	}
 
 }

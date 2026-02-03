@@ -1,6 +1,7 @@
 package org.lokova.classroom;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -47,6 +48,18 @@ public class Group implements Serializable, Comparable<Group> {
 		return (code == other.code) && Objects.equals(members, other.members) && Objects.equals(name, other.name);
 	}
 
+	public int getCode() {
+		return code;
+	}
+
+	public Set<Student> getMembers() {
+		return Collections.unmodifiableSet(members);
+	}
+
+	public String getName() {
+		return name;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(code, members, name);
@@ -60,9 +73,17 @@ public class Group implements Serializable, Comparable<Group> {
 		return members.remove(s);
 	}
 
+	public void setCode(int code) {
+		this.code = code;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public String toString() {
-		return "Group [name=" + name + ", code=" + code + "]";
+		return name;
 	}
 
 }
