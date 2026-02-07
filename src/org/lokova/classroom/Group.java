@@ -2,6 +2,7 @@ package org.lokova.classroom;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -10,6 +11,7 @@ public class Group implements Serializable, Comparable<Group> {
 
 	private static final long serialVersionUID = 1L;
 	private static Set<Group> all = new TreeSet<>();
+	private static Set<String> names = new HashSet<>();
 
 	public static Set<Group> getAll() {
 		return Collections.unmodifiableSet(all);
@@ -20,13 +22,13 @@ public class Group implements Serializable, Comparable<Group> {
 	}
 
 	private String name;
-	private int code;
 	private Set<Student> members;
 
-	public Group(String name, int code) {
-		this.name = name;
-		this.code = code;
+	public Group(String name) {
 		members = new TreeSet<>();
+		if (!names.add(name)) {
+			throw new IllegalStateException("Cannot create a group with a name that already exists");
+		}
 	}
 
 	public boolean add(Student s) {
@@ -39,11 +41,16 @@ public class Group implements Serializable, Comparable<Group> {
 
 	@Override
 	public int compareTo(Group o) {
-		return Integer.compare(code, o.code);
+		return name.compareTo(o.name);
 	}
 
 	public boolean contains(Student s) {
 		return members.contains(s);
+	}
+
+	public void delete() {
+		all.remove(this);
+		names.remove(name);
 	}
 
 	@Override
@@ -55,11 +62,16 @@ public class Group implements Serializable, Comparable<Group> {
 			return false;
 		}
 		Group other = (Group) obj;
-		return (code == other.code) && Objects.equals(members, other.members) && Objects.equals(name, other.name);
+		return Objects.equals(name, other.name);
 	}
 
-	public int getCode() {
-		return code;
+	public String getInfo() {
+		var sb = new StringBuilder(name + "\n");
+		for (Student s : members) {
+			sb.append(s + "\n");
+		}
+		sb.append("Hashcode: " + hashCode());
+		return sb.toString();
 	}
 
 	public Set<Student> getMembers() {
@@ -72,7 +84,7 @@ public class Group implements Serializable, Comparable<Group> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(code, members, name);
+		return Objects.hash(name);
 	}
 
 	public int memberCount() {
@@ -81,10 +93,6 @@ public class Group implements Serializable, Comparable<Group> {
 
 	public boolean remove(Student s) {
 		return members.remove(s);
-	}
-
-	public void setCode(int code) {
-		this.code = code;
 	}
 
 	public void setName(String name) {
