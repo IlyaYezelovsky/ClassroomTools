@@ -85,6 +85,11 @@ public class StudentUI {
 		editButton.setFont(new Font("Noto Sans SC", Font.PLAIN, 12));
 
 		JButton delButton = new JButton("删除");
+		delButton.addActionListener(e -> {
+			if (list.getSelectedValue() != null) {
+				list.getSelectedValue().delete();
+			}
+		});
 		delButton.setFont(new Font("Noto Sans SC", Font.PLAIN, 12));
 		panel_1.add(delButton);
 
