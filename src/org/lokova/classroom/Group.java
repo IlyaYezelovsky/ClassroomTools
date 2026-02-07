@@ -9,6 +9,16 @@ import java.util.TreeSet;
 public class Group implements Serializable, Comparable<Group> {
 
 	private static final long serialVersionUID = 1L;
+	private static Set<Group> all = new TreeSet<>();
+
+	public static Set<Group> getAll() {
+		return Collections.unmodifiableSet(all);
+	}
+
+	public static Group[] getAllArray() {
+		return all.toArray(new Group[0]);
+	}
+
 	private String name;
 	private int code;
 	private Set<Student> members;

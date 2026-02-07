@@ -21,7 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
 public class Utils {
-	
+
 	public static final File currentFolder = new File(".");
 
 	public static void copy(String text) {
@@ -48,6 +48,10 @@ public class Utils {
 		String dayOfWeek = time.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.ENGLISH).toUpperCase();
 		return String.format("%d-%02d-%02d (%s) %02d:%02d:%02d", time.getYear(), time.getMonthValue(),
 				time.getDayOfMonth(), dayOfWeek, time.getHour(), time.getMinute(), time.getSecond());
+	}
+
+	public static boolean isInteger(String s) {
+		return s.matches("-?\\d+");
 	}
 
 	public static String pm(int x) {

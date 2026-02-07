@@ -78,6 +78,14 @@ public class Student implements Serializable, Comparable<Student> {
 			os.writeObject(all);
 		}
 	}
+	
+	private Student() {
+		// Empty constructor
+	}
+	
+	public static Student nullObject() {
+		return new Student();
+	}
 
 	private int code;
 	private String name;
@@ -86,7 +94,7 @@ public class Student implements Serializable, Comparable<Student> {
 	private List<ScoreRecord> records = new ArrayList<>();
 	private Group group;
 
-	public Student(int code, String name, Sex sex) {
+	public Student(int code, String name, Sex sex, Group group) {
 		this.code = code;
 		this.name = name;
 		this.sex = sex;
@@ -97,6 +105,7 @@ public class Student implements Serializable, Comparable<Student> {
 		if (sex == Sex.FEMALE) {
 			girls.add(this);
 		}
+		this.group = group;
 	}
 
 	public void addRecord(int score, String reason) {
@@ -206,8 +215,20 @@ public class Student implements Serializable, Comparable<Student> {
 		return Objects.hash(name, code, sex);
 	}
 
-	public void setGroup(Group group) {
+	public boolean setGroup(Group group) {
+		if (this.group == group) {
+			return false;
+		}
+		this.group.remove(this);
 		this.group = group;
+		group.add(this);
+		return true;
+	}
+	
+	public void delete() {
+		all.remove(this);
+		boys.remove(this);
+		girls.remove(this);
 	}
 
 	public void setName(String name) {
