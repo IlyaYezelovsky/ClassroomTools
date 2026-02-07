@@ -78,14 +78,6 @@ public class Student implements Serializable, Comparable<Student> {
 			os.writeObject(all);
 		}
 	}
-	
-	private Student() {
-		// Empty constructor
-	}
-	
-	public static Student nullObject() {
-		return new Student();
-	}
 
 	private int code;
 	private String name;
@@ -134,6 +126,12 @@ public class Student implements Serializable, Comparable<Student> {
 	public int compareTo(Student o) {
 		Objects.requireNonNull(o, "Student cannot be null");
 		return Integer.compare(code, o.code);
+	}
+
+	public void delete() {
+		all.remove(this);
+		boys.remove(this);
+		girls.remove(this);
 	}
 
 	public boolean deleteRecord(ScoreRecord rekord) {
@@ -223,12 +221,6 @@ public class Student implements Serializable, Comparable<Student> {
 		this.group = group;
 		group.add(this);
 		return true;
-	}
-	
-	public void delete() {
-		all.remove(this);
-		boys.remove(this);
-		girls.remove(this);
 	}
 
 	public void setName(String name) {
